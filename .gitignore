@@ -1,4 +1,6 @@
 *.gem
+*.sw?
+*~
 *.rbc
 /.config
 /coverage/
