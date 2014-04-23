@@ -20,7 +20,9 @@ class Filme
       filme = self.new(grade.child.children.last.remove.text, grade.child.children.text)
       prog = grade.children.css('li[@class="linha filme"]')
       prog.children.each do |r|
-        filme.programacao << Programacao.new(*r.children[0].children.map { |el| el.text })
+        programacao = r.children[0].children.map { |el| el.text }
+        programacao = Hash[[:data, :hora,:canal].zip(programacao)]
+        filme.programacao << Programacao.new(programacao)
       end
     filmes << filme
     end
