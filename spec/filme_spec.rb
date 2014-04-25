@@ -22,8 +22,16 @@ end
 
 describe Filme do
 
-  subject { Filme.new('Filme', filme) }
+  subject { Filme.new(titulo: filme, tipo: 'Filme') }
+  its(:titulo)      { should eql(filme) }
+  its(:tipo)        { should eql('Filme') }
   its(:programacao) { should be_an Array }
+
+  its(:inspect) do
+    should eql(
+      "#<Filme: tipo=\"Filme\", titulo=\"#{filme}\">"
+    )
+  end
 
   describe '.find' do
     subject { Filme.find(filme) }

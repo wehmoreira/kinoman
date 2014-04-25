@@ -1,14 +1,15 @@
 require 'nokogiri'
 require 'open-uri'
-
 require_relative 'programacao'
 
-class Filme
+class Filme < Struct.new(:tipo, :titulo)
 
-  attr_accessor :titulo, :tipo, :programacao
+  attr_accessor :programacao
 
-  def initialize(tipo, titulo)
-    @tipo, @titulo = tipo, titulo
+  include Modelize
+
+  def initialize(*args)
+    super(*args)
     @programacao = []
   end
 
@@ -17,11 +18,11 @@ class Filme
     grades = nokogiri_object.xpath('//ul[@class="grade-resultado"]')
     filmes = []
     grades.each do |grade|
-      filme = self.new(grade.child.children.last.remove.text, grade.child.children.text)
+      filme = self.new(tipo: grade.child.children.last.remove.text, titulo: grade.child.children.text)
       prog = grade.children.css('li[@class="linha filme"]')
       prog.children.each do |r|
         programacao = r.children[0].children.map { |el| el.text }
-        programacao = Hash[[:data, :hora,:canal].zip(programacao)]
+        programacao = Hash[[:data, :hora, :canal].zip(programacao)]
         filme.programacao << Programacao.new(programacao)
       end
     filmes << filme

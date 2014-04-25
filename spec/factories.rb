@@ -8,12 +8,12 @@ FactoryGirl.define do
     ["Dom - 06/04", "22:00", "Warner HD"], ["Dom - 06/04", "22:00", "Warner"]
   ].each_with_index do |value, key|
     factory "prog_#{key}".to_sym, class: Programacao do
-      initialize_with{ new(*value) }
+      initialize_with{ new(Hash[[:data, :hora, :canal].zip(value)]) }
     end
   end
 
   factory :filme do
-    initialize_with{ new('Filme', 'Matrix') }
+    initialize_with{ new(tipo: 'Filme', filme: 'Matrix') }
     programacao do
       [ build(:prog_0), build(:prog_1), build(:prog_2),
         build(:prog_3), build(:prog_4), build(:prog_5) ]
@@ -21,7 +21,7 @@ FactoryGirl.define do
   end
 
   factory :sequel, class: Filme do
-    initialize_with{ new('Filme', 'Matrix Regurgitations') }
+    initialize_with{ new(tipo: 'Filme', filme: 'Matrix Regurgitations') }
     programacao do
       [ build(:prog_6), build(:prog_7), build(:prog_8),
         build(:prog_9), build(:prog_10), build(:prog_11) ]
