@@ -22,37 +22,43 @@ end
 
 describe Filme do
 
-  subject { Filme.new(titulo: filme, tipo: 'Filme') }
-  its(:titulo)      { should eql(filme) }
-  its(:tipo)        { should eql('Filme') }
-  its(:programacao) { should be_an Array }
+  context 'instância com título "Matrix" e tipo "Filme"' do
 
-  its(:inspect) do
-    should eql(
-      "#<Filme: tipo=\"Filme\", titulo=\"#{filme}\">"
-    )
+    subject(:movie) { Filme.new(titulo: filme, tipo: 'Filme') }
+
+    it 'contém título, tipo e array de programações' do
+      expect(movie.titulo).to eq(filme)
+      expect(movie.tipo).to eq('Filme')
+      expect(movie.programacao).to be_an Array
+      expect(movie.inspect).to eq("#<Filme: tipo=\"Filme\", titulo=\"#{filme}\">")
+    end
+
   end
 
   describe '.find' do
+
     subject { Filme.find(filme) }
 
-    it { should be_an Array }
+    it { is_expected.to be_an Array }
 
-    its(:size) { should eq(2) }
+    context 'quando recebe o nome de um filme ("Matrix") como parâmetro' do
 
-    it 'deve ser um array de filmes contendo um array de programacoes' do
-      subject.each do |film|
-        film.should be_a Filme
-        film.programacao.each do |prog|
-          prog.should be_a Programacao
+      it { expect(subject.size).to eq(2) }
+
+      it 'retorna array de Filmes contendo um array de programações desse filme' do
+        subject.each do |film|
+          expect(film).to be_a Filme
+          film.programacao.each do |prog|
+            expect(prog).to be_a Programacao
+          end
         end
       end
-    end
 
-    it 'deve conter todas as informacoes de programacao adequadamente' do
-      array = descanter(subject, [build(:filme), build(:sequel)])
-      array.each_slice(2) do |result, expected|
-        result.should eq(expected)
+      it 'deve conter dia, horário e canal de cada programação' do
+        array = descanter(subject, [build(:filme), build(:sequel)])
+        array.each_slice(2) do |result, expected|
+          expect(result).to eq(expected)
+        end
       end
     end
 

@@ -4,12 +4,11 @@ describe Programacao do
 
   subject { Programacao.new(data: 'Dom - 06/04', hora: '22:00', canal: 'Warner') }
 
-  its(:data)  { should eql('Dom - 06/04') }
-  its(:hora)  { should eql('22:00')  }
-  its(:canal) { should eql('Warner') }
-
-  its(:inspect) do
-    should eql(
+  it "instância de Programação contém data, hora e canal do filme" do
+    expect(subject.data).to eql('Dom - 06/04')
+    expect(subject.hora).to eql('22:00')
+    expect(subject.canal).to eql('Warner')
+    expect(subject.inspect).to eql(
       '#<Programacao: data="Dom - 06/04", hora="22:00", canal="Warner">'
     )
   end
